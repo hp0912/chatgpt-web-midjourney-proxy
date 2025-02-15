@@ -2,6 +2,8 @@
 FROM node:lts-alpine AS frontend
 
 RUN npm install pnpm -g
+# 安装 Git
+RUN apk add --no-cache git
 
 WORKDIR /app
 
@@ -9,9 +11,10 @@ COPY ./package.json /app
 
 COPY ./pnpm-lock.yaml /app
 
-RUN pnpm -v
+RUN git --version
 
-RUN pnpm install  --reporter=verbose
+RUN pnpm install
+#RUN pnpm install --production && rm -rf /root/.npm /root/.pnpm-store /usr/local/share/.cache /tmp/*
 
 COPY . /app
 
